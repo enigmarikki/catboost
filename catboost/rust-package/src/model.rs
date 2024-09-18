@@ -75,7 +75,7 @@ impl Model {
 
     /// Calculate raw model predictions
     pub fn predict<
-        TObjectFloatFeatures: AsRef<[f32]>,
+        TObjectFloatFeatures: AsRef<[f64]>,
         TFloatFeatures: AsRef<[TObjectFloatFeatures]>,
         TCatFeatureString: AsRef<str>,
         TObjectCatFeatures: AsRef<[TCatFeatureString]>,
@@ -83,7 +83,7 @@ impl Model {
         TTextFeatureString: AsRef<CStr>,
         TObjectTextFeatures: AsRef<[TTextFeatureString]>,
         TTextFeatures: AsRef<[TObjectTextFeatures]>,
-        TEmbedding: AsRef<[f32]>,
+        TEmbedding: AsRef<[f64]>,
         TObjectEmbeddingFeatures: AsRef<[TEmbedding]>,
         TEmbeddingFeatures: AsRef<[TObjectEmbeddingFeatures]>
     >(
@@ -177,7 +177,7 @@ impl Model {
 
         let mut embedding_features_ptr = embedding_features_ptr_storage
             .iter_mut()
-            .map(|object_embeddings_ptrs: &mut Vec<*const f32>| object_embeddings_ptrs.as_mut_ptr())
+            .map(|object_embeddings_ptrs: &mut Vec<*const f64>| object_embeddings_ptrs.as_mut_ptr())
             .collect::<Vec<_>>();
 
         let mut prediction = vec![0.0; object_count.unwrap() * self.get_dimensions_count()];
@@ -203,7 +203,7 @@ impl Model {
 
     /// Calculate raw model predictions on float features and string categorical feature values
     pub fn calc_model_prediction<
-        TFloatFeature: AsRef<[f32]>,
+        TFloatFeature: AsRef<[f64]>,
         TFloatFeatures: AsRef<[TFloatFeature]>,
         TString: AsRef<str>,
         TCatFeature: AsRef<[TString]>,
@@ -342,11 +342,11 @@ mod tests {
         .unwrap();
     }
 
-    fn split_string_with_floats(features: &str, delim: char) -> Vec<f32> {
-        features.split(delim).map(|e| e.parse::<f32>().unwrap() ).collect::<Vec<_>>()
+    fn split_string_with_floats(features: &str, delim: char) -> Vec<f64> {
+        features.split(delim).map(|e| e.parse::<f64>().unwrap() ).collect::<Vec<_>>()
     }
 
-    fn get_num_features(features: &str) -> Vec<f32> {
+    fn get_num_features(features: &str) -> Vec<f64> {
         split_string_with_floats(features, '\t')
     }
 
@@ -358,7 +358,7 @@ mod tests {
         features.iter().map(|s| CString::new(*s).unwrap() ).collect::<Vec<_>>()
     }
 
-    fn get_embeddings(features: &str) -> Vec<f32> {
+    fn get_embeddings(features: &str) -> Vec<f64> {
         split_string_with_floats(features, ';')
     }
 
@@ -455,15 +455,15 @@ mod tests {
             ObjectsOrderFeatures::new()
                 .with_float_features(
                     &[
-                        &[20100514.0f32,
-                          20100914.0f32,
-                          20100514.0f32],
-                        &[19950602.0f32,
-                          19970925.0f32,
-                          20130731.0f32],
-                        &[19990521.0f32,
-                          19991019.0f32,
-                          20000101.0f32]
+                        &[20100514.0f64,
+                          20100914.0f64,
+                          20100514.0f64],
+                        &[19950602.0f64,
+                          19970925.0f64,
+                          20130731.0f64],
+                        &[19990521.0f64,
+                          19991019.0f64,
+                          20000101.0f64]
                     ]
                 )
                 .with_cat_features(
@@ -545,15 +545,15 @@ mod tests {
             ObjectsOrderFeatures::new()
                 .with_float_features(
                     &[
-                        &[20100514.0f32,
-                          20100914.0f32,
-                          20100514.0f32],
-                        &[19950602.0f32,
-                          19970925.0f32,
-                          20130731.0f32],
-                        &[19990521.0f32,
-                          19991019.0f32,
-                          20000101.0f32]
+                        &[20100514.0f64,
+                          20100914.0f64,
+                          20100514.0f64],
+                        &[19950602.0f64,
+                          19970925.0f64,
+                          20130731.0f64],
+                        &[19990521.0f64,
+                          19991019.0f64,
+                          20000101.0f64]
                     ]
                 )
                 .with_cat_features(
